@@ -1,6 +1,9 @@
 package com.system.ordercontrol.domain.entity;
 
+import com.google.type.Decimal;
 import jakarta.persistence.Column;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,9 +11,11 @@ import org.hibernate.annotations.CreationTimestamp;
 public class OrderItem {
   private Long productId;
   private int quantity;
+  private BigDecimal price;
 
-  public OrderItem(Long productId, int quantity) {
+  public OrderItem(Long productId, BigDecimal price, int quantity) {
     this.productId = productId;
+    this.price = price;
     this.quantity = quantity;
   }
 
@@ -49,6 +54,14 @@ public class OrderItem {
 
   public void setQuantity(int quantity) {
     this.quantity = quantity;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
+
+  public BigDecimal getPrice() {
+    return price;
   }
 
   public LocalDateTime getCreatedAt() {

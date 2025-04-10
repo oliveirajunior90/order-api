@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +25,7 @@ public class OrderControllerV1 {
   }
 
   @PostMapping
-  public ResponseEntity<HttpStatus> create(@RequestBody CreateOrderDTO dto) {
+  public ResponseEntity<HttpStatus> create(@RequestBody @Validated CreateOrderDTO dto) {
     createOrderUseCase.execute(dto);
     return ResponseEntity.ok(HttpStatus.OK);
   }

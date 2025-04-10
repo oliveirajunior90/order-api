@@ -5,7 +5,9 @@ import static org.mockito.Mockito.*;
 import com.system.ordercontrol.application.dto.CreateOrderDTO;
 import com.system.ordercontrol.application.service.OrderService;
 import com.system.ordercontrol.domain.entity.OrderItem;
-import com.system.ordercontrol.domain.repository.OrderRepository;
+import com.system.ordercontrol.infraestructure.repository.OrderRepository;
+
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,8 +30,8 @@ class OrderServiceTest {
   private CreateOrderDTO createOrderDtoWithIngredients() {
 
     Set<OrderItem> items = new HashSet<>();
-    items.add(new OrderItem(1L, 2));
-    items.add(new OrderItem(2L, 3));
+    items.add(new OrderItem(1L, new BigDecimal("2.0"), 3));
+    items.add(new OrderItem(2L, new BigDecimal("3.0"), 2));
 
     var orderDto = new CreateOrderDTO("John Doe", "teste@teste.com", items);
 

@@ -1,4 +1,4 @@
-package com.system.ordercontrol.domain.repository;
+package com.system.ordercontrol.infraestructure.repository;
 
 import com.system.ordercontrol.domain.entity.Order;
 import jakarta.validation.constraints.NotNull;

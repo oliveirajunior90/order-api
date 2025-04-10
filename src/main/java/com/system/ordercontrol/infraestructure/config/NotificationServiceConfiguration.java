@@ -1,6 +1,6 @@
-package com.system.ordercontrol.config;
+package com.system.ordercontrol.infraestructure.config;
 
-import com.system.ordercontrol.application.service.NotificationService;
+import com.system.ordercontrol.infraestructure.kafka.NotificationService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +14,8 @@ public class NotificationServiceConfiguration {
 
 
   @Bean
-  NotificationService<UUID, byte[]> notificationService(
-      @Qualifier("notificationKafkaTemplate") KafkaTemplate<UUID, byte[]> kafkaTemplate,
+  NotificationService<String, byte[]> notificationService(
+      @Qualifier("notificationKafkaTemplate") KafkaTemplate<String, byte[]> kafkaTemplate,
       @Value("${spring.kafka.topics.stock-control}") String topicName) {
     return new NotificationService<>(kafkaTemplate, topicName);
   }

@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+
 class OrderServiceTest {
 
   @Mock private OrderRepository orderRepository;
@@ -45,5 +46,13 @@ class OrderServiceTest {
     var orderDto = createOrderDtoWithIngredients();
     orderService.create(orderDto);
     verify(orderRepository).save(orderDto.toOrder());
+  }
+
+  @Test
+  void calculateTotalPrice() throws Exception {
+    var orderDto = createOrderDtoWithIngredients();
+    var total = orderService.calculateTotalPrice(orderDto.items());
+    assert(total).equals(new BigDecimal("12.0"));
+
   }
 }

@@ -4,32 +4,51 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 type OrderItem struct {
-	ProductID int     `json:"productId"`
-	Quantity  int     `json:"quantity"`
-	Price     string  `json:"price"`
+	ProductID int    `json:"productId"`
+	Quantity  int    `json:"quantity"`
+	Price     string `json:"price"`
 }
 
 type CreateOrderDTO struct {
 	CustomerName  string      `json:"customerName"`
 	CustomerEmail string      `json:"customerEmail"`
-	Items        []OrderItem `json:"items"`
+	Items         []OrderItem `json:"items"`
+}
+
+var client = &http.Client{}
+
+func randomOrder() CreateOrderDTO {
+	names := []string{"João", "Maria", "Carlos", "Ana", "Fernanda", "Rafael"}
+	sobrenomes := []string{"Silva", "Souza", "Oliveira", "Lima", "Costa", "Pereira"}
+
+	name := fmt.Sprintf("%s %s", names[rand.Intn(len(names))], sobrenomes[rand.Intn(len(sobrenomes))])
+	email := fmt.Sprintf("%s.%s%d@example.com", names[rand.Intn(len(names))], sobrenomes[rand.Intn(len(sobrenomes))], rand.Intn(10000))
+
+	numItems := rand.Intn(3) + 1
+	items := make([]OrderItem, numItems)
+	for i := range items {
+		items[i] = OrderItem{
+			ProductID: rand.Intn(10) + 1,
+			Quantity:  rand.Intn(5) + 1,
+			Price:     fmt.Sprintf("%.2f", rand.Float64()*200),
+		}
+	}
+
+	return CreateOrderDTO{
+		CustomerName:  name,
+		CustomerEmail: email,
+		Items:         items,
+	}
 }
 
 func sendOrder() {
-	url := "http://localhost:8080/api/v1/order"
-
-	order := CreateOrderDTO{
-		CustomerName:  "João Silva",
-		CustomerEmail: "joao.silva@example.com",
-		Items: []OrderItem{
-			{ProductID: 1, Quantity: 2, Price: "99.90"},
-			{ProductID: 2, Quantity: 1, Price: "149.50"},
-		},
-	}
+	order := randomOrder()
 
 	jsonData, err := json.Marshal(order)
 	if err != nil {
@@ -37,14 +56,13 @@ func sendOrder() {
 		return
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "http://localhost:9999/api/v1/order", bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Println("Erro ao criar requisição:", err)
 		return
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("Erro ao enviar requisição:", err)
@@ -56,5 +74,13 @@ func sendOrder() {
 }
 
 func main() {
-	sendOrder()
+	rand.Seed(time.Now().UnixNano())
+	ticker := time.NewTicker(20 * time.Millisecond) // 50 req/s
+	defer ticker.Stop()
+
+	fmt.Println("Enviando pedidos... pressione Ctrl+C para parar.")
+
+	for range ticker.C {
+		go sendOrder()
+	}
 }

@@ -15,6 +15,9 @@ import java.util.UUID;
 @Configuration
 public class KafkaConsumerConfig {
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
 
@@ -27,7 +30,7 @@ public class KafkaConsumerConfig {
     @Bean
     public ConsumerFactory<String, byte[]> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializer);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
         config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);

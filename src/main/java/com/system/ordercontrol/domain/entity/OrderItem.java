@@ -4,6 +4,7 @@ import com.google.type.Decimal;
 import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,11 +22,11 @@ public class OrderItem {
 
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @CreationTimestamp
   @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @Override
   public boolean equals(Object o) {
@@ -64,11 +65,11 @@ public class OrderItem {
     return price;
   }
 
-  public LocalDateTime getCreatedAt() {
+  public Instant getCreatedAt() {
     return createdAt;
   }
 
-  public LocalDateTime getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 }

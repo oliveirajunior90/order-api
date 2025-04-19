@@ -16,6 +16,9 @@ import org.springframework.kafka.core.ProducerFactory;
 @Configuration
 public class KafkaProducerConfig {
 
+  @Value("${spring.kafka.bootstrap-servers}")
+  private String bootstrapServers;
+
   @Value("${spring.kafka.consumer.group-id}")
   private String groupId;
 
@@ -29,7 +32,7 @@ public class KafkaProducerConfig {
   public ProducerFactory<String, byte[]> producerFactory() {
 
     Map<String, Object> configProps = new HashMap<>();
-    configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keyDeserializer);
     configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueDeserializer);
 

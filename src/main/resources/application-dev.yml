@@ -1,22 +1,24 @@
+server:
+  port: ${SERVER_PORT}
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ordercontrol?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
-    username: order
-    password: order
-
+    url: jdbc:postgresql://${DB_HOST}:5432/${DB_DATABASE}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
   flyway:
     locations: classpath:db/migration
     enabled: true
-    url: ${spring.datasource.url}
-    user: ${spring.datasource.username}
-    password: ${spring.datasource.password}
+    url: jdbc:postgresql://${DB_HOST}:5432/${DB_DATABASE}
+    user: ${DB_USERNAME}
+    password: ${DB_USERNAME}
   kafka:
     topics:
       stock-control: stock-control-order-v1
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     consumer:
       group-id: my-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -37,6 +39,7 @@ logging:
             sql:
               BasicBinder: trace
 
+debug: true
 
 
 

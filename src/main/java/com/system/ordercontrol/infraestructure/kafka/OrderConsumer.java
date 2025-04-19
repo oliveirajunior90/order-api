@@ -29,11 +29,10 @@ public class OrderConsumer {
     }
 
     @KafkaListener(topics = "${spring.kafka.topics.stock-control}")
-    public void orderConsumer(ConsumerRecord<String, byte[]> record, Acknowledgment ack){
+    public void orderConsumer(ConsumerRecord<String, byte[]> record){
 
         if (record.value() == null || record.value().length == 0) {
             log.warn("Received empty message with key: {}", record.key());
-            ack.acknowledge();
             return;
         }
 
@@ -55,7 +54,6 @@ public class OrderConsumer {
             );
             log.info("Created with key {} order: {}", key, orderDto);
             orderService.create(orderDto);
-            ack.acknowledge();
         } catch (Exception e) {
             log.info("Error to create message with key: {}", e.getMessage());
         }

@@ -20,8 +20,11 @@ public class OrderService {
     this.orderRepository = orderRepository;
   }
 
-  private BigDecimal calculateTotalPrice(Set<OrderItem> orderItems) {
-    return orderItems.stream().map(OrderItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+  public BigDecimal calculateTotalPrice(Set<OrderItem> orderItems) {
+    return orderItems
+            .stream()
+            .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   public void create(CreateOrderDTO orderDto) {

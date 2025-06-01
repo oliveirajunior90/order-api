@@ -10,6 +10,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -31,17 +34,20 @@ public class Order {
   @Column(name = "customer_email", nullable = false)
   private String customerEmail;
 
+  @Column(name = "total_price")
+  private BigDecimal totalPrice;
+
   @Column(name = "status", nullable = false)
   @Enumerated(EnumType.STRING)
   private OrderStatusEnum status = OrderStatusEnum.PENDING;
 
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @CreationTimestamp
   @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @Type(JsonType.class)
   @Column(columnDefinition = "jsonb")
@@ -106,11 +112,15 @@ public class Order {
     this.orderItems = orderItems;
   }
 
-  public LocalDateTime getCreatedAt() {
+  public void setTotalPrice(BigDecimal totalPrice) {
+    this.totalPrice = totalPrice;
+  }
+
+  public Instant getCreatedAt() {
     return createdAt;
   }
 
-  public LocalDateTime getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 }

@@ -4,7 +4,7 @@ spring:
   kafka:
     topics:
       stock-control: test
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     consumer:
       auto-offset-reset: earliest
       group-id: test-group

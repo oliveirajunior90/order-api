@@ -25,8 +25,6 @@ public class CreateOrderUseCase {
 
             Order order = dto.toOrder();
 
-            orderService.create(dto);
-
             OrderOuterClass.Order orderProto = OrderOuterClass.Order.newBuilder()
                     .setId(order.getId().toString())
                     .setCustomerName(order.getCustomerName())
@@ -36,6 +34,7 @@ public class CreateOrderUseCase {
                             .map(item -> OrderOuterClass.OrderItem.newBuilder()
                                     .setProductId(item.getProductId())
                                     .setQuantity(item.getQuantity())
+                                    .setPrice(item.getPrice().toString())
                                     .build())
                             .collect(Collectors.toList()))
                     .build();

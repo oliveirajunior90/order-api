@@ -1,6 +1,10 @@
 package com.system.ordercontrol.domain.entity;
 
+import com.google.type.Decimal;
 import jakarta.persistence.Column;
+
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,19 +12,21 @@ import org.hibernate.annotations.CreationTimestamp;
 public class OrderItem {
   private Long productId;
   private int quantity;
+  private BigDecimal price;
 
-  public OrderItem(Long productId, int quantity) {
+  public OrderItem(Long productId, BigDecimal price, int quantity) {
     this.productId = productId;
+    this.price = price;
     this.quantity = quantity;
   }
 
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @CreationTimestamp
   @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @Override
   public boolean equals(Object o) {
@@ -51,11 +57,19 @@ public class OrderItem {
     this.quantity = quantity;
   }
 
-  public LocalDateTime getCreatedAt() {
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
+
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  public Instant getCreatedAt() {
     return createdAt;
   }
 
-  public LocalDateTime getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 }

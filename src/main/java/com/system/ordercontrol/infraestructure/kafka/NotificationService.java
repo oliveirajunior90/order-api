@@ -1,4 +1,4 @@
-package com.system.ordercontrol.application.service;
+package com.system.ordercontrol.infraestructure.kafka;
 
 import java.util.List;
 import org.apache.kafka.clients.producer.ProducerRecord;

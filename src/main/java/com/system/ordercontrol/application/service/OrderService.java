@@ -28,13 +28,8 @@ public class OrderService {
   }
 
   public void create(CreateOrderDTO orderDto) {
-    CreateOrderDTO dto  = new CreateOrderDTO(
-            orderDto.customerName(),
-            orderDto.customerEmail(),
-            orderDto.items()
-    );
-    Order order = dto.toOrder();
-    order.setTotalPrice(calculateTotalPrice(dto.items()));
+    Order order = orderDto.toOrder();
+    order.setTotalPrice(calculateTotalPrice(orderDto.items()));
     orderRepository.save(order);
   }
 
